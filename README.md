@@ -10,7 +10,7 @@
 
   <p>
     A high-performance, privacy-focused start page built for the modern web. <br />
-    Features a floating command center, local-first storage, and strict OPSEC protocols.
+    Features a floating command center, local-first storage, and strict protocols.
   </p>
 
   <br />
