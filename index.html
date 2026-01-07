@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Start</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%23ffffff%22 rx=%2220%22/></svg>">
+    <link rel="icon" id="favicon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%23ffffff%22 rx=%2220%22/></svg>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
@@ -79,8 +79,7 @@
                     <hr style="border:0; border-top:1px solid #222; margin:20px 0;">
                     
                     <h4 style="color:white; margin-bottom:15px; font-size:0.9rem;">Manage Shortcuts</h4>
-                    <div class="link-manage" id="link-list">
-                        </div>
+                    <div class="link-manage" id="link-list"></div>
 
                     <div style="display:flex; gap:10px; margin-top:15px;">
                         <input type="text" id="ln-name" class="text" placeholder="Name" style="width:40%">
@@ -94,6 +93,11 @@
                         <div class="info"><h4>Wallpaper</h4></div>
                         <button class="btn-sec" onclick="document.getElementById('file').click()">Select</button>
                         <input type="file" id="file" hidden accept="image/*">
+                    </div>
+                    <div class="row">
+                        <div class="info"><h4>Tab Icon</h4></div>
+                        <button class="btn-sec" onclick="document.getElementById('fav-up').click()">Upload</button>
+                        <input type="file" id="fav-up" hidden accept="image/*">
                     </div>
                     <div class="row">
                         <div class="info"><h4>Font</h4></div>
