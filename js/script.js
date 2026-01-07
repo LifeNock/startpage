@@ -27,7 +27,7 @@ function init() {
     document.getElementById('zen').checked = cfg.zen;
     
     live(); 
-    loadBg(); render(); renderManage(); clock(); weather(); plh();
+    loadBg(); loadFav(); render(); renderManage(); clock(); weather(); plh();
 }
 
 function save() {
@@ -93,7 +93,7 @@ function weather() {
     });
 }
 
-// LINKS & MANAGER
+// LINKS
 function render() {
     const l = document.getElementById('links'); l.innerHTML = '';
     cfg.links.forEach(k => {
@@ -153,7 +153,24 @@ function loadBg() {
     if(b) document.getElementById('bg').style.backgroundImage = `url(${b})`;
     else document.getElementById('bg').style.backgroundImage = `url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564')`;
 }
-function wipe() { localStorage.removeItem('v9'); localStorage.removeItem('v9bg'); location.reload(); }
+
+// FAVICON
+document.getElementById('fav-up').addEventListener('change', e => {
+    const r = new FileReader();
+    r.onload = ev => { localStorage.setItem('v9fav', ev.target.result); loadFav(); };
+    r.readAsDataURL(e.target.files[0]);
+});
+function loadFav() {
+    const f = localStorage.getItem('v9fav');
+    if(f) document.getElementById('favicon').href = f;
+}
+
+function wipe() { 
+    localStorage.removeItem('v9'); 
+    localStorage.removeItem('v9bg'); 
+    localStorage.removeItem('v9fav');
+    location.reload(); 
+}
 
 // WINDOW
 const winEl = document.getElementById('win');
