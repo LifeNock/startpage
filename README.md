@@ -9,14 +9,6 @@
   </p>
 
   <p>
-    <a href="https://lifenock.github.io/startpage">
-      <img src="https://img.shields.io/badge/SYSTEM-ONLINE-success?style=for-the-badge&logo=github&color=222222" />
-    </a>
-    <img src="https://img.shields.io/badge/security-hardened-blue?style=for-the-badge&color=444444" />
-    <img src="https://img.shields.io/badge/protocol-v12-red?style=for-the-badge&color=660000" />
-  </p>
-
-  <p>
     A high-performance, privacy-focused start page built for the modern web. <br />
     Features a floating command center, local-first storage, and strict OPSEC protocols.
   </p>
@@ -29,9 +21,9 @@
 
 <br />
 
-## System Modules
+## Features
 
-| **Core** | **Customization** |
+| **Core Systems** | **Customization** |
 | :--- | :--- |
 | **Strict Mode** - Enforces HTTPS protocols on all shortcuts. | **Theme Engine** - Custom wallpapers, accent colors, and fonts. |
 | **Weather Stealth** - Displays temperature while masking location data. | **Floating UI** - Draggable, OS-style settings window. |
