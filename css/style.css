@@ -210,6 +210,19 @@ input:checked + .slider:before { transform: translateX(18px); background: var(--
 }
 .btn-sec:hover { border-color: #666; color: white; }
 
+/* MANAGE LIST */
+.link-manage {
+    background: #151515; border: 1px solid #333; border-radius: 8px;
+    max-height: 150px; overflow-y: auto; margin-bottom: 15px;
+}
+.manage-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 15px; border-bottom: 1px solid #222; color: #888; font-size: 0.9rem;
+}
+.manage-item:last-child { border-bottom: none; }
+.del-btn { cursor: pointer; transition: 0.2s; color: #555; }
+.del-btn:hover { color: #d55; }
+
 /* ANIM */
 @keyframes pop { from{transform:translate(-50%,-48%) scale(0.95);opacity:0} to{transform:translate(-50%,-50%) scale(1);opacity:1} }
 @keyframes slideUp { from{transform:translateY(40px);opacity:0} to{transform:translateY(0);opacity:1} }
