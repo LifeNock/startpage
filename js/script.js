@@ -5,16 +5,15 @@ const DEF = {
         {n:"Roblox", u:"https://roblox.com"},
         {n:"Proton", u:"https://mail.proton.me"}
     ],
-    user: "LifeNock", eng: "google", acc: "#ffffff",
+    user: "Guest", eng: "google", acc: "#ffffff",
     font: "'Inter', sans-serif", scale: 8,
     wEn: true, wHide: false, cel: false,
     side: "left", fmt24: true, zen: false
 };
-let cfg = JSON.parse(localStorage.getItem('v8')) || DEF;
+let cfg = JSON.parse(localStorage.getItem('v9')) || DEF;
 
 // INIT
 function init() {
-    // LOAD CONFIG INTO INPUTS
     document.getElementById('user').value = cfg.user;
     document.getElementById('eng').value = cfg.eng;
     document.getElementById('acc').value = cfg.acc;
@@ -27,13 +26,11 @@ function init() {
     document.getElementById('fmt24').checked = cfg.fmt24;
     document.getElementById('zen').checked = cfg.zen;
     
-    // APPLY
     live(); 
-    loadBg(); render(); clock(); weather(); plh();
+    loadBg(); render(); renderManage(); clock(); weather(); plh();
 }
 
 function save() {
-    // GET VALUES
     cfg.user = document.getElementById('user').value;
     cfg.eng = document.getElementById('eng').value;
     cfg.acc = document.getElementById('acc').value;
@@ -46,22 +43,18 @@ function save() {
     cfg.fmt24 = document.getElementById('fmt24').checked;
     cfg.zen = document.getElementById('zen').checked;
 
-    localStorage.setItem('v8', JSON.stringify(cfg));
+    localStorage.setItem('v9', JSON.stringify(cfg));
     live(); weather();
 }
 
 // VISUALS
 function live() {
     const r = document.documentElement.style;
-    // APPLY TO CSS VARS
     r.setProperty('--accent', cfg.acc);
     r.setProperty('--font', cfg.font);
     document.getElementById('time').style.fontSize = cfg.scale + 'rem';
-    
-    // LAYOUT
     document.body.className = cfg.side === 'right' ? 'right-sidebar' : '';
     
-    // ZEN
     const els = ['wthr', 'greet', 'bar'];
     els.forEach(id => {
         const el = document.getElementById(id);
@@ -95,13 +88,12 @@ function weather() {
         let t = d.current_weather.temperature;
         let u = "°C";
         if(!cfg.cel) { t = (t*9/5)+32; u = "°F"; }
-        
         document.getElementById('w-temp').innerText = Math.round(t)+u;
         document.getElementById('w-loc').style.display = cfg.wHide ? 'none' : 'inline';
     });
 }
 
-// LINKS
+// LINKS & MANAGER
 function render() {
     const l = document.getElementById('links'); l.innerHTML = '';
     cfg.links.forEach(k => {
@@ -112,10 +104,24 @@ function render() {
         l.appendChild(i);
     });
 }
+
+function renderManage() {
+    const m = document.getElementById('link-list'); m.innerHTML = '';
+    cfg.links.forEach((k, idx) => {
+        const d = document.createElement('div'); d.className = 'manage-item';
+        d.innerHTML = `<span>${k.n}</span><i class="fa-solid fa-trash del-btn" onclick="delLink(${idx})"></i>`;
+        m.appendChild(d);
+    });
+}
+
 function addLink() {
     const n = document.getElementById('ln-name').value;
     const u = document.getElementById('ln-url').value;
-    if(n&&u) { cfg.links.push({n, u}); save(); render(); }
+    if(n&&u) { cfg.links.push({n, u}); save(); render(); renderManage(); }
+}
+
+function delLink(i) {
+    cfg.links.splice(i, 1); save(); render(); renderManage();
 }
 
 // SEARCH
@@ -139,22 +145,22 @@ function plh() {
 // SYSTEM
 document.getElementById('file').addEventListener('change', e => {
     const r = new FileReader();
-    r.onload = ev => { localStorage.setItem('v8bg', ev.target.result); loadBg(); };
+    r.onload = ev => { localStorage.setItem('v9bg', ev.target.result); loadBg(); };
     r.readAsDataURL(e.target.files[0]);
 });
 function loadBg() {
-    const b = localStorage.getItem('v8bg');
+    const b = localStorage.getItem('v9bg');
     if(b) document.getElementById('bg').style.backgroundImage = `url(${b})`;
     else document.getElementById('bg').style.backgroundImage = `url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564')`;
 }
-function wipe() { localStorage.removeItem('v8'); localStorage.removeItem('v8bg'); location.reload(); }
+function wipe() { localStorage.removeItem('v9'); localStorage.removeItem('v9bg'); location.reload(); }
 
 // WINDOW
 const winEl = document.getElementById('win');
 const head = document.getElementById('drag');
 let drag=false, sx, sy, lx, ly;
 
-function win(s) { if(s) winEl.classList.add('show'); else { winEl.classList.remove('show'); save(); } }
+function win(s) { if(s) { winEl.classList.add('show'); renderManage(); } else { winEl.classList.remove('show'); save(); } }
 function tab(i) {
     document.querySelectorAll('.panel').forEach(e=>e.classList.remove('active'));
     document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));
