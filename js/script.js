@@ -14,17 +14,21 @@ let cfg = JSON.parse(localStorage.getItem('v9')) || DEF;
 
 // INIT
 function init() {
-    document.getElementById('user').value = cfg.user;
-    document.getElementById('eng').value = cfg.eng;
-    document.getElementById('acc').value = cfg.acc;
-    document.getElementById('font').value = cfg.font;
-    document.getElementById('scale').value = cfg.scale;
-    document.getElementById('w-en').checked = cfg.wEn;
-    document.getElementById('w-hide').checked = cfg.wHide;
-    document.getElementById('cel').checked = cfg.cel;
-    document.getElementById('side').value = cfg.side;
-    document.getElementById('fmt24').checked = cfg.fmt24;
-    document.getElementById('zen').checked = cfg.zen;
+    // Inputs
+    const setVal = (id, v) => { if(document.getElementById(id)) document.getElementById(id).value = v; }
+    const setChk = (id, v) => { if(document.getElementById(id)) document.getElementById(id).checked = v; }
+
+    setVal('user', cfg.user);
+    setVal('eng', cfg.eng);
+    setVal('acc', cfg.acc);
+    setVal('font', cfg.font);
+    setVal('scale', cfg.scale);
+    setChk('w-en', cfg.wEn);
+    setChk('w-hide', cfg.wHide);
+    setChk('cel', cfg.cel);
+    setVal('side', cfg.side);
+    setChk('fmt24', cfg.fmt24);
+    setChk('zen', cfg.zen);
     
     live(); 
     loadBg(); loadFav(); render(); renderManage(); clock(); weather(); plh();
@@ -83,13 +87,15 @@ function weather() {
     if(!cfg.wEn || !navigator.geolocation) return;
     navigator.geolocation.getCurrentPosition(async p => {
         const {latitude, longitude} = p.coords;
-        const r = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`);
-        const d = await r.json();
-        let t = d.current_weather.temperature;
-        let u = "°C";
-        if(!cfg.cel) { t = (t*9/5)+32; u = "°F"; }
-        document.getElementById('w-temp').innerText = Math.round(t)+u;
-        document.getElementById('w-loc').style.display = cfg.wHide ? 'none' : 'inline';
+        try {
+            const r = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`);
+            const d = await r.json();
+            let t = d.current_weather.temperature;
+            let u = "°C";
+            if(!cfg.cel) { t = (t*9/5)+32; u = "°F"; }
+            document.getElementById('w-temp').innerText = Math.round(t)+u;
+            document.getElementById('w-loc').style.display = cfg.wHide ? 'none' : 'inline';
+        } catch(e) {}
     });
 }
 
@@ -99,8 +105,11 @@ function render() {
     cfg.links.forEach(k => {
         const i = document.createElement('li'); i.className = 'item';
         i.onclick = () => window.location.href = k.u;
-        const d = new URL(k.u).hostname;
-        i.innerHTML = `<div class="icon"><img src="https://www.google.com/s2/favicons?domain=${d}&sz=64" class="favicon"></div><span class="label">${k.n}</span>`;
+        
+        let domain = 'google.com';
+        try { domain = new URL(k.u).hostname; } catch(e) {}
+        
+        i.innerHTML = `<div class="icon"><img src="https://www.google.com/s2/favicons?domain=${domain}&sz=64" class="favicon"></div><span class="label">${k.n}</span>`;
         l.appendChild(i);
     });
 }
@@ -114,10 +123,27 @@ function renderManage() {
     });
 }
 
+// ADD LINK (STRICT MODE)
 function addLink() {
     const n = document.getElementById('ln-name').value;
     const u = document.getElementById('ln-url').value;
-    if(n&&u) { cfg.links.push({n, u}); save(); render(); renderManage(); }
+
+    if (n && u) {
+        // STRICT CHECK
+        if (!u.startsWith('https://')) {
+            alert("Please Put Https:// before your shortcut");
+            return;
+        }
+        
+        cfg.links.push({n, u}); 
+        save(); 
+        render(); 
+        renderManage();
+        
+        // Clear inputs
+        document.getElementById('ln-name').value = '';
+        document.getElementById('ln-url').value = '';
+    }
 }
 
 function delLink(i) {
