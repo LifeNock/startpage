@@ -1,4 +1,3 @@
-// CONFIG
 const DEF = {
     links: [
         {n:"YouTube", u:"https://youtube.com"},
@@ -11,10 +10,7 @@ const DEF = {
     side: "left", fmt24: true, zen: false
 };
 let cfg = JSON.parse(localStorage.getItem('v9')) || DEF;
-
-// INIT
 function init() {
-    // Inputs
     const setVal = (id, v) => { if(document.getElementById(id)) document.getElementById(id).value = v; }
     const setChk = (id, v) => { if(document.getElementById(id)) document.getElementById(id).checked = v; }
 
@@ -50,8 +46,6 @@ function save() {
     localStorage.setItem('v9', JSON.stringify(cfg));
     live(); weather();
 }
-
-// VISUALS
 function live() {
     const r = document.documentElement.style;
     r.setProperty('--accent', cfg.acc);
@@ -66,8 +60,6 @@ function live() {
         else { el.style.opacity = (id==='wthr' && !cfg.wEn) ? '0' : '1'; el.style.pointerEvents = 'auto'; }
     });
 }
-
-// CLOCK
 function clock() {
     const now = new Date();
     const hr = cfg.fmt24 ? {hour12:false} : {hour12:true};
@@ -81,8 +73,6 @@ function clock() {
     document.getElementById('greet').innerText = `${msg}, ${cfg.user}`;
     setTimeout(clock, 1000);
 }
-
-// WEATHER
 function weather() {
     if(!cfg.wEn || !navigator.geolocation) return;
     navigator.geolocation.getCurrentPosition(async p => {
@@ -98,8 +88,6 @@ function weather() {
         } catch(e) {}
     });
 }
-
-// LINKS
 function render() {
     const l = document.getElementById('links'); l.innerHTML = '';
     cfg.links.forEach(k => {
@@ -122,14 +110,11 @@ function renderManage() {
         m.appendChild(d);
     });
 }
-
-// ADD LINK (STRICT MODE)
 function addLink() {
     const n = document.getElementById('ln-name').value;
     const u = document.getElementById('ln-url').value;
 
     if (n && u) {
-        // STRICT CHECK
         if (!u.startsWith('https://')) {
             alert("Please Put Https:// before your shortcut");
             return;
@@ -139,8 +124,6 @@ function addLink() {
         save(); 
         render(); 
         renderManage();
-        
-        // Clear inputs
         document.getElementById('ln-name').value = '';
         document.getElementById('ln-url').value = '';
     }
@@ -149,8 +132,6 @@ function addLink() {
 function delLink(i) {
     cfg.links.splice(i, 1); save(); render(); renderManage();
 }
-
-// SEARCH
 document.getElementById('search').addEventListener('keypress', e => {
     if(e.key === 'Enter') {
         let v = e.target.value; if(!v) return;
@@ -167,8 +148,6 @@ function plh() {
     const t = ["Command", "Search", "Execute", "Find", "Query"];
     document.getElementById('search').placeholder = t[Math.floor(Math.random()*t.length)] + "...";
 }
-
-// SYSTEM
 document.getElementById('file').addEventListener('change', e => {
     const r = new FileReader();
     r.onload = ev => { localStorage.setItem('v9bg', ev.target.result); loadBg(); };
@@ -179,8 +158,6 @@ function loadBg() {
     if(b) document.getElementById('bg').style.backgroundImage = `url(${b})`;
     else document.getElementById('bg').style.backgroundImage = `url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564')`;
 }
-
-// FAVICON
 document.getElementById('fav-up').addEventListener('change', e => {
     const r = new FileReader();
     r.onload = ev => { localStorage.setItem('v9fav', ev.target.result); loadFav(); };
@@ -197,8 +174,6 @@ function wipe() {
     localStorage.removeItem('v9fav');
     location.reload(); 
 }
-
-// WINDOW
 const winEl = document.getElementById('win');
 const head = document.getElementById('drag');
 let drag=false, sx, sy, lx, ly;
